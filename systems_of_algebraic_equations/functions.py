@@ -7,7 +7,6 @@ def gauss(A, B, returnFinalMatrix=False) -> list :
     w = w.triangularize()
 
     n = w.row
-
     results = [0] * n
 
     # calcul of the last solution wich will be used to calculate the other ones

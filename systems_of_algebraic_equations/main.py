@@ -9,7 +9,7 @@ A = Matrix(4, 4)
 A.setDataByArray(arrA)
 A.display()
 
-B = Matrix(4, 2)
+B = Matrix(4, 1)
 B.setDataByArray(arrB)
 B.display()
 

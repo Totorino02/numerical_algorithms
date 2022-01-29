@@ -114,7 +114,6 @@ class Matrix():
         else:
             rangeI = range(n-1, 0, -1)
             rangeJ = lambda i : range(i-1, -1, -1)
-            
 
         for i in rangeI:
 
@@ -139,8 +138,3 @@ class Matrix():
         matrix = matrix.triangularize(upper=True).triangularize(upper=False)
 
         return matrix
-
-
-""" 
-m = Matrix(4, 3)
-m.display() """
