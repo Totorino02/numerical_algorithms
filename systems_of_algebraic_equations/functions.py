@@ -1,5 +1,10 @@
 
-def gauss(A, B, returnFinalMatrix=False) -> list :
+def gauss(A, B, return_final_matrix=False) -> list :
+
+    if not (A.is_squared and B.is_col_matrix) :
+        print("first matrix should be squared, second one should be a col matrix")
+        exit()
+
     # w = working matrix, obtained by appending B to A
     w = A.extend(B)
 
@@ -18,13 +23,17 @@ def gauss(A, B, returnFinalMatrix=False) -> list :
         _sum = sum([w.data[i][j] * results[j] for j in range(i+1, n)])
         results[i] = round((w.data[i][-1] - _sum ) / w.data[i][i], 4)
 
-    if returnFinalMatrix:
+    if return_final_matrix:
         return results, w
     else:
         return results
 
 
-def gaussJordan(A, B, returnFinalMatrix=False)  -> list :
+def gauss_jordan(A, B, return_final_matrix=False) -> list :
+    if not (A.is_squared and B.is_col_matrix) :
+        print("first matrix should be squared, second one should be a col matrix")
+        exit()
+
     # w = working matrix, obtained by appending B to A
     w = A.extend(B)
 
@@ -41,7 +50,7 @@ def gaussJordan(A, B, returnFinalMatrix=False)  -> list :
     # retrieving results 
     results = [round(w.data[i][-1], 4) for i in range(n)]
 
-    if returnFinalMatrix:
+    if return_final_matrix:
         return results, w
     else:
         return results
