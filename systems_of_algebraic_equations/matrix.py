@@ -97,6 +97,18 @@ class Matrix():
         matrix = Matrix(n, m)
         matrix.set_data([[None for i in range(m)] for j in range(n)])
         return matrix
+
+    def multiply(self, another_matrix):
+        if self.col == another_matrix.row:
+            a = self
+            b = another_matrix
+            matrix = Matrix(a.row, b.col)
+            for i in range(a.row):
+                for j in range(b.col):
+                    matrix.data[i][j] = sum([a.data[i][k] * b.data[k][j] for k in range(a.col)])
+        else :
+            matrix = self.noneMatrix()
+        return matrix
     
     def extend(self, another_matrix):
         if another_matrix.row != self.row:
