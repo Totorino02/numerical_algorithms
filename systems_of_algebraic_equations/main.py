@@ -1,11 +1,12 @@
+from os import sep
 from matrix import Matrix
 from functions import *
 
 # sample data
-""" 
 arrA = [[3, 2, 3, 4], [4, 4, 3, 2], [1, 4, 4, 3], [4, 5, 6, 7]]
-arrB = [[4], [8], [2], [0]]
+arrB = [[4], [8], [2], [7]]
 
+""" 
 arrA = [[1, -1, 2, -1], [2, -2, 3, -3], [1, 1, 1, 0], [1, -1, 4, 3]]
 arrB = [[-8], [-20], [-2], [4]]
 
@@ -18,15 +19,18 @@ arrB = [[2], [2], [1]]
 arrA = [[3, -1, 2], [1, 2, 3], [2, -2, -1]]
 arrB = [[12], [11], [2]]
 
-"""
 arrA = [[0, 2, 1], [1, 0, 0], [3, 0, 1]]
 arrB = [[5], [-1], [-2]]
+"""
 
-A = Matrix(4, 4)
+arrA = [[34, 0, 10], [0, 10, 0], [10, 0, 6]]
+arrB = [[44], [0], [15]]
+
+A = Matrix(3, 3)
 A.set_data(arrA)
 A.display()
 
-B = Matrix(4, 1)
+B = Matrix(3, 1)
 B.set_data(arrB)
 B.display()
 
@@ -65,3 +69,9 @@ print("LU Crout : ", *lu_results, sep="    ")
 """ l.display()
 u.display()
 C.display() """
+
+jacobi_results = jacobi(A, B)
+print("JACOBI : ", *jacobi_results, sep="    ")
+
+gauss_seidel_results = gauss_seidel(A, B)
+print("GAUSS SEIDEL : ", *gauss_seidel_results, sep="    ")

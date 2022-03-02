@@ -1,4 +1,4 @@
-import copy 
+import copy
 from matrix import Matrix
 
 
@@ -179,4 +179,44 @@ def LU_Crout(A, B, return_final_matrixes=False):
         return x, l, u, C
     else:
         return x
+    
+
+def jacobi(A, B, nb_iter = 100):
+
+    if not (A.is_squared and B.is_col_matrix) :
+        print("first matrix should be squared, second one should be a column matrix")
+        exit()
+
+    n = A.row
+
+    xk = xk1 = [0] * n
+
+    for i in range(nb_iter):
+        for j in range(n):
+            si = sum(A.data[j][k] * xk[k] for k in range(n) if k != j)
+            xk1[j] = (B.data[j][0] - si) / A.data[j][j]
+        #xk = xk1.copy()
+        xk = xk1
+
+    return [round(x, 4) for x in xk]
+
+
+def gauss_seidel(A, B, nb_iter = 100):
+    if not (A.is_squared and B.is_col_matrix) :
+        print("first matrix should be squared, second one should be a column matrix")
+        exit()
+
+    n = A.row
+
+    xk = xk1 = [0] * n
+
+    for i in range(nb_iter):
+        for j in range(n):
+            si1 = sum(A.data[j][k] * xk1[k] for k in range(j))
+            si2 = sum(A.data[j][k] * xk[k] for k in range(j+1, n))
+            xk1[j] = (B.data[j][0] - si1 - si2) / A.data[j][j]
+        xk = xk1.copy()
+
+    return [round(x, 4) for x in xk]
+
     
