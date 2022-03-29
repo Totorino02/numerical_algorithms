@@ -175,3 +175,16 @@ class Matrix():
             matrix = self.noneMatrix()
 
         return matrix
+
+    def transpose(mat):
+        if mat.is_squared:
+            n = mat.row
+            matrix = Matrix(n, n)
+            for i in range(n):
+                for j in range(n):
+                    matrix.data[i][j] = mat.data[j][i]
+        else:
+            matrix = mat.none_matrix()
+        
+        return matrix
+
