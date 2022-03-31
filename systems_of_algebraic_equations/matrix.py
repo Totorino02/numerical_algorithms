@@ -6,12 +6,35 @@ class Matrix():
         self.col = nb_col
         self.data = [[initial_value for i in range(self.col)] for j in range(self.row)]
 
-        self.is_squared = self.row == self.col
-        self.is_col_matrix = self.col == 1
-        self.is_row_matrix = self.row == 1
         self.is_extended = False
         self.extended_col_A = None
         self.extended_col_B = None
+
+
+    def is_squared(self):
+        return self.row == self.col
+
+    def is_col_matrix(self):
+        return self.col == 1
+
+    def is_row_matrix(self):
+        return self.row == 1
+
+    def is_symetric(self):
+        condition = [self.data[i][j] == self.data[j][i] for i in range(self.row) for j in range(self.col)]
+        return all(condition)
+
+    def is_tridiagonal(self):
+        for i in range(self.row):
+            for j in range(self.col):
+                cell = self.data[i][j]
+                if i == j or i == j-1 or i == j+1:
+                    if cell == 0:
+                        return False
+                else:
+                    if cell != 0:
+                        return False
+        return True
 
 
     def set_data(self, array=None):
