@@ -1,11 +1,13 @@
 import copy
-from matrix import Matrix
+#from matrix import Matrix
+from systems_of_algebraic_equations.matrix import Matrix
 
 
 def solveTiangularMatrix(A, B=None, method="lift", A_is_extended=False, return_list=True):
-    """ if not (A.is_upper_triangular_matrix and B.is_col_matrix):
+    """ if not (A.is_upper_triangular_matrix and B.is_col_matrix()):
         print("first matrix should be upper triangle, second one should be a column matrix")
-        exit() """
+        print("solveTiangularMatrix cant solve a non triangular matrix")
+        return """
     # TODO verify if A is a triangular matrix and B is a column matrix
 
     n = A.row   
@@ -57,9 +59,9 @@ def solveTiangularMatrix(A, B=None, method="lift", A_is_extended=False, return_l
 
 def gauss(A, B, return_final_matrix=False):
 
-    if not (A.is_squared and B.is_col_matrix) :
-        print("first matrix should be squared, second one should be a column matrix")
-        exit()
+    if not (A.is_squared() and B.is_col_matrix()) :
+        raise Exception("first matrix should be squared, second one should be a column matrix. \nExiting Gauss method")
+
 
     # w = working matrix, obtained by appending B to A
     w = A.extend(B)
@@ -76,9 +78,9 @@ def gauss(A, B, return_final_matrix=False):
 
 
 def gauss_jordan(A, B, return_final_matrix=False):
-    if not (A.is_squared and B.is_col_matrix) :
-        print("first matrix should be squared, second one should be a column matrix")
-        exit()
+    if not (A.is_squared() and B.is_col_matrix()) :
+        raise Exception("first matrix should be squared, second one should be a column matrix. \nExiting Gauss Jordan method")
+
 
     # w = working matrix, obtained by appending B to A
     w = A.extend(B)
@@ -101,6 +103,9 @@ def gauss_jordan(A, B, return_final_matrix=False):
 
 
 def LU_Crout(A, B, return_final_matrixes=False):
+    if not (A.is_squared() and B.is_col_matrix()) :
+        raise Exception("first matrix should be squared, second one should be a column matrix. \nExiting LU Crout method")
+
 
     # work on a copy so that we do not modify the original matrix
     W = copy.deepcopy(A)
@@ -120,8 +125,9 @@ def LU_Crout(A, B, return_final_matrixes=False):
         o[i], o[m] = o[m], o[i]
 
 
-    if not W.is_squared:
+    if not W.is_squared():
         print("Matrix should be squared")
+        print("Exiting LU_Crout method")
         return
     n = W.row
 
@@ -179,13 +185,46 @@ def LU_Crout(A, B, return_final_matrixes=False):
         return x, l, u, C
     else:
         return x
-    
 
-def jacobi(A, B, nb_iter = 100):
 
-    if not (A.is_squared and B.is_col_matrix) :
-        print("first matrix should be squared, second one should be a column matrix")
-        exit()
+def cholesky(A, B, return_final_matrix=False):
+    if not (A.is_squared() and B.is_col_matrix()):
+        raise Exception("first matrix should be squared, second one should be a column matrix. \nExiting Cholesky method")
+    if not A.is_symetric() :
+        raise Exception("first matrix should be symetric. \nExiting Cholesky method")
+        
+
+    n = A.row
+
+    l = Matrix(n, n, initial_value=0)
+    for i in range(n):
+        for j in range(i):
+            l.data[i][j] = (A.data[i][j] - sum(l.data[i][k] * l.data[j][k] for k in range(j))) / l.data[j][j]
+            
+        l.data[i][i] = (A.data[i][i] - sum((l.data[i][k] ** 2) for k in range(i))) ** 0.5
+            
+    lt = Matrix.transpose(l)
+    y = solveTiangularMatrix(l, B, "descent", return_list=False)
+    x = solveTiangularMatrix(lt, y, "lift")
+
+    if return_final_matrix:
+        return x, l
+    else:
+        return x
+
+
+def thomas(A, B, return_final_matrix=False):
+    if not (A.is_squared() and B.is_col_matrix()) :
+        raise Exception("first matrix should be squared, second one should be a column matrix. \nExiting Thomas method")
+    if not A.is_tridiagonal():
+        raise Exception("first matrix should be tridiagonal. \nExiting Thomas method")
+
+    return gauss(A, B, return_final_matrix)
+
+
+def jacobi(A, B, nb_iter=100):
+    if not (A.is_squared() and B.is_col_matrix()) :
+        raise Exception("first matrix should be squared, second one should be a column matrix. \nExiting Jacobi method")
 
     n = A.row
 
@@ -201,10 +240,10 @@ def jacobi(A, B, nb_iter = 100):
     return [round(x, 4) for x in xk]
 
 
-def gauss_seidel(A, B, nb_iter = 100):
-    if not (A.is_squared and B.is_col_matrix) :
-        print("first matrix should be squared, second one should be a column matrix")
-        exit()
+def gauss_seidel(A, B, nb_iter=100):
+    if not (A.is_squared() and B.is_col_matrix()) :
+        raise Exception("first matrix should be squared, second one should be a column matrix. \nExiting Gauss Seidel method")
+
 
     n = A.row
 
